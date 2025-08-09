@@ -23,7 +23,8 @@ class Stack {
             newNode.next = temp;
         }
 
-        return this.size++;
+        this.size++;
+        return this.size;
     }
 
     pop() {
@@ -46,7 +47,7 @@ class Stack {
 } 
 
 let stack = new Stack();
-stack.push(1);
+console.log(stack.push(1));
 stack.push(2);
 console.log(stack);
 console.log(stack.first);
