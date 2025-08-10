@@ -186,6 +186,87 @@ class BinarySearchTree {
             return true;
         }
     }
+
+    breadthFirstSearch() {
+        let queue = [];
+        let result = [];
+
+        queue.push(this.root);
+        while (queue.length > 0) {
+            let currentNode = queue.shift();
+            result.push(currentNode.value);
+
+            if (currentNode.left) {
+                queue.push(currentNode.left);
+            }
+
+            if (currentNode.right) {
+                queue.push(currentNode.right);
+            }
+        }
+
+        return result;
+    }
+
+    depthFirstPreOrder() {
+        let result = [];
+        let current = this.root;
+
+        function traverse(node) {
+            result.push(node.value);
+
+            if (node.left) {
+                traverse(node.left);
+            }
+
+            if (node.right) {
+                traverse(node.right);
+            }
+        }
+
+        traverse(current);
+        return result;
+    }
+
+    depthFirstPostOrder() {
+        let result = [];
+        let current = this.root;
+
+        function traverse(node) {
+            if (node.left) {
+                traverse(node.left);
+            }
+
+            if (node.right) {
+                traverse(node.right);
+            }
+
+            result.push(node.value);
+        }
+
+        traverse(current);
+        return result;
+    }
+
+    depthFirstInOrder() {
+        let result = [];
+        let current = this.root;
+
+        function traverse(node) {
+            if (node.left) {
+                traverse(node.left);
+            }
+
+            result.push(node.value);
+
+            if (node.right) {
+                traverse(node.right);
+            }
+        }
+
+        traverse(current);
+        return result;
+    }
 }
 
 let tree = new BinarySearchTree();
@@ -208,3 +289,7 @@ console.log(tree.find(10));
 console.log(tree.find(11));
 console.log(tree.find(20));
 console.log(tree.find(99));
+console.log(tree.breadthFirstSearch());
+console.log(tree.depthFirstPreOrder());
+console.log(tree.depthFirstPostOrder());
+console.log(tree.depthFirstInOrder());
