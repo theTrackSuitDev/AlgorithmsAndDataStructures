@@ -1,6 +1,6 @@
 class Graph {
     constructor() {
-        this.adjacencyList = {}
+        this.adjacencyList = {};
     }
 
     addVertex(vertex) {
@@ -17,11 +17,13 @@ class Graph {
     }
 
     removeEdge(vertexOne, vertexTwo) {
-        this.adjacencyList[vertexOne] = this.adjacencyList[vertexOne]
-        .filter((edge) => edge !== vertexTwo);
+        this.adjacencyList[vertexOne] = this.adjacencyList[vertexOne].filter(
+            (edge) => edge !== vertexTwo
+        );
 
-        this.adjacencyList[vertexTwo] = this.adjacencyList[vertexTwo]
-        .filter((edge) => edge !== vertexOne);
+        this.adjacencyList[vertexTwo] = this.adjacencyList[vertexTwo].filter(
+            (edge) => edge !== vertexOne
+        );
     }
 
     removeVertex(vertex) {
@@ -32,6 +34,76 @@ class Graph {
         }
 
         delete this.adjacencyList[vertex];
+    }
+
+    depthFirstRecursive(startVertex) {
+        let result = [];
+        let visited = {};
+        let adjacencyList = this.adjacencyList;
+
+        function traverse(vertex) {
+            if (!vertex) {
+                return;
+            }
+
+            visited[vertex] = true;
+            result.push(vertex);
+
+            for (const neighbor of adjacencyList[vertex]) {
+                if (!visited[neighbor]) {
+                    traverse(neighbor);
+                }
+            }
+        }
+
+        traverse(startVertex);
+        return result;
+    }
+
+    depthFirstIterative(startVertex) {
+        let result = [];
+        let visited = {};
+        let vertexStack = [startVertex];
+        let adjacencyList = this.adjacencyList;
+
+        visited[startVertex] = true;
+
+        while (vertexStack.length) {
+            let currentVertex = vertexStack.pop();
+            result.push(currentVertex);
+
+            for (const neighbor of adjacencyList[currentVertex]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    vertexStack.push(neighbor);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    breadthFirst(startVertex) {
+        let vertexQueue = [startVertex];
+        let result = [];
+        let visited = {};
+        let adjacencyList = this.adjacencyList;
+
+        visited[startVertex] = true;
+
+        while (vertexQueue.length) {
+            let currentVertex = vertexQueue.shift();
+            result.push(currentVertex);
+
+            for (const neighbor of adjacencyList[currentVertex]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    vertexQueue.push(neighbor);
+                }
+            }
+        }
+
+        return result;
     }
 }
 
@@ -53,7 +125,13 @@ graph.addEdge("Paris", "Sofia");
 console.log(graph.adjacencyList["Tokyo"]);
 console.log(graph.adjacencyList["Sofia"]);
 console.log(graph.adjacencyList["Paris"]);
+console.log("Traverse", graph.depthFirstRecursive("Sofia"));
+console.log("Traverse", graph.depthFirstIterative("Sofia"));
+console.log("Traverse", graph.breadthFirst("Sofia"));
 graph.removeVertex("Paris");
 console.log(graph.adjacencyList["Tokyo"]);
 console.log(graph.adjacencyList["Sofia"]);
 console.log(graph.adjacencyList["Paris"]);
+console.log("Traverse", graph.depthFirstRecursive("Sofia"));
+console.log("Traverse", graph.depthFirstIterative("Sofia"));
+console.log("Traverse", graph.breadthFirst("Sofia"));
